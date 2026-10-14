@@ -1,0 +1,41 @@
+@startuml Online Store - Class Diagram
+title Online Store - Class Diagram
+
+class Customer {
+  +customerId: UUID
+  +name: String
+  +email: String
+}
+
+class Product {
+  +productId: UUID
+  +name: String
+  +price: Decimal
+  +stockQuantity: Integer
+}
+
+class Order {
+  +orderId: UUID
+  +createdAt: DateTime
+  +status: OrderStatus
+  +calculateTotal(): Decimal
+}
+
+class OrderItem {
+  +quantity: Integer
+  +unitPrice: Decimal
+  +getSubtotal(): Decimal
+}
+
+enum OrderStatus {
+  Pending
+  Paid
+  Shipped
+  Cancelled
+}
+
+Customer "1" -- "0..*" Order : places
+Order "1" *-- "1..*" OrderItem : contains
+OrderItem "*" --> "1" Product : refers to
+
+@enduml

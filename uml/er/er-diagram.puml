@@ -1,0 +1,39 @@
+@startuml OnlineStoreERDiagram
+title Online Store - Entity Relationship Diagram
+
+entity "Customer" {
+  * customer_id : UUID <<PK>>
+  --
+  name : VARCHAR
+  email : VARCHAR
+}
+
+entity "Product"{
+  * product_id : UUID <<PK>>
+  --
+  name : VARCHAR
+  price : DECIMAL
+  stock_quantity : INTEGER
+}
+
+entity "Order" {
+  * order_id : UUID <<PK>>
+  --
+  customer_id : UUID <<FK>>
+  created_at : TIMESTAMP
+  status : VARCHAR
+}
+
+entity "OrderItem" {
+  * order_id : UUID <<PK, FK>>
+  * product_id : UUID <<PK, FK>>
+  --
+  quantity : INTEGER
+  unit_price : DECIMAL
+}
+
+Customer ||--o{ Order
+Order ||--|{ OrderItem
+Product ||--o{ OrderItem
+
+@enduml

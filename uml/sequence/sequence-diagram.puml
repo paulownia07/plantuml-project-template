@@ -1,0 +1,26 @@
+@startuml Online Store - Place Order
+title Online Store - Place Order
+
+actor Customer
+boundary "Storefront" as Storefront
+control "Order Service" as OrderService
+database "Inventory" as Inventory
+database "Order Database" as OrderDatabase
+
+Customer -> Storefront : Submit order
+Storefront -> OrderService : placeOrder(items)
+OrderService -> Inventory : checkAndReserve(items)
+
+alt Items are available
+  Inventory --> OrderService : Reservation confirmed
+  OrderService -> OrderDatabase : save(order)
+  OrderDatabase --> OrderService : orderId
+  OrderService --> Storefront : Order confirmation(orderId)
+  Storefront --> Customer : Show confirmation
+else An item is unavailable
+  Inventory --> OrderService : Reservation failed
+  OrderService --> Storefront : Report unavailable item
+  Storefront --> Customer : Show error
+end
+
+@enduml
